@@ -12,7 +12,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "load-grunt-tasks": "3.2.0"
   },
-  "version": "0.0.0",
+  "version": "0.1.0",
   "name": "jquery-github",
   "description": "A jQuery plugin that pulls information from a Github repository and inserts it into a page using AJAX",
   "main": "Gruntfile.js",
