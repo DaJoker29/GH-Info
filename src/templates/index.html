@@ -1,11 +1,39 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Project Title</title>
+    <title>Github</title>
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <main class="container">
+        <div class="jumbotron">
+            <h2>Github <br><small>A <strong>jQuery</strong> plugin</small></h2>
+        </div>
+
+        <div class="alert alert-success">
+            The following sections are generated dynamically by the plugin
+        </div>
+        <section class="well well-lg github"></section>
+        <section class="well well-lg cascade"></section>
+        <section class="well well-lg hermes"></section>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        $('.github').github({
+            username: 'dajoker29',
+            repo: 'GH-jQ'
+        });
+        $('.cascade').github({
+            username: 'dajoker29',
+            repo: 'Cascade'
+        });
+        $('.hermes').github({
+            username: 'dajoker29',
+            repo: 'Hermes'
+        })
+    </script>
 </body>
 </html>
