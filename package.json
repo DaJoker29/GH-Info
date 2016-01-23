@@ -1,0 +1,23 @@
+{
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "autoprefixer-core": "^5.2.0",
+    "grunt-postcss": "^0.5.1",
+    "grunt-eslint": "^14.0.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-sass": "^0.8.1",
+    "grunt-contrib-uglify": "^0.7.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "3.2.0"
+  },
+  "version": "0.0.0",
+  "name": "jquery-github",
+  "description": "A jQuery plugin that pulls information from a Github repository and inserts it into a page using AJAX",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dewitt A. Buckingham, III <captain@zerodaedalus.net> (http://zerodaedalus.com)"
+}
