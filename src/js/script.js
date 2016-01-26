@@ -85,12 +85,6 @@
                 $( '<span>' ).text( data.watchers ).appendTo ( el );
             }
 
-            /*
-
-                STILL NEED TO ADD LANGUAGES and WATCHERS.
-
-             */
-
             // Version
             if( settings.showVersion ) {
                 $.ajax( {
@@ -149,35 +143,33 @@
                 } );
             }
 
-            // Watchers
-            if( settings.showWatched ) {
+            // Languages
+            if( settings.showLanguages ) {
                 $.ajax( {
-                    url: root + repos + settings.owner + '/' + settings.repo + '/stats/contributors',
+                    url: root + repos + settings.owner + '/' + settings.repo + '/languages',
                     success: function ( data ) {
-                        $( '<span>' )
-                            .attr( 'href', data.html_url )
-                            .text( data.length )
-                            .appendTo( el );
-                        },
+                        var languages = [];
+                        var container = $( '<div>' );
+
+                        $.each( data, function ( key, value ) {
+                            $( '<span>' ).text( key ).appendTo( container );
+                        });
+
+                        container.appendTo( el );
+                    },
                     error: function () {
-                        console.log( 'No Contributors Found for ' + settings.repo );
+                        console.log( 'No Languages Found for ' + settings.repo );
                     }
                 } );
             }
 
-
             return el;
-        }
-
-        // Get Data
-        function fetchData ( data ) {
-
         }
 
         // Fetch Data
         $.ajax({
             url: root + repos + settings.owner + '/' + settings.repo
-        }).done(function ( data ) {
+        }).done( function ( data ) {
 
             console.log(data);
             that.append(buildDOM( data ));
