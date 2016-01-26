@@ -31,41 +31,55 @@
         var root = "https://api.github.com";
         var repos = "/repos/";
         var that = this;
+        // Hide element
+        this.hide();
         // Build DOM
         function buildDOM(data) {
-            var el = $("<div></div>").addClass("gh-main");
+            var el = $("<div>").addClass("gh-main");
+            var header = $("<div>").addClass("gh-header");
+            var content = $("<div>").addClass("gh-content");
+            var badges = $("<div>").addClass("gh-badges");
+            /*
+                Header Code
+             */
             // Repository Name
             if (settings.showRepoName) {
                 var repo = settings.linkRepo ? "<a>" : "<span>";
-                $(repo).attr("href", data.html_url).addClass("gh-repo").text(data.name).appendTo(el);
+                $(repo).attr("href", data.html_url).addClass("gh-repo").text(data.name).appendTo(header);
             }
             // Owner Name
             if (settings.showOwnerName) {
                 if (settings.showRepoName) {
-                    $("<span>").text(" by ").appendTo(el);
+                    $("<span>").text(" by ").appendTo(header);
                 }
                 var owner = settings.linkOwner ? "<a>" : "<span>";
-                $(owner).attr("href", data.owner.html_url).addClass("gh-owner").text(data.owner.login).appendTo(el);
+                $(owner).attr("href", data.owner.html_url).addClass("gh-owner").text(data.owner.login).appendTo(header);
             }
+            /*
+                Description Code
+             */
             // Description
             if (settings.showDesc) {
-                $("<p>").addClass("gh-desc").text(data.description).appendTo(el);
+                $("<p>").addClass("gh-desc").text(data.description).appendTo(content);
             }
+            /*
+                Badge Content Code
+             */
             // Last Updated
             if (settings.showLastUpdated) {
-                $("<span>").addClass("gh-lastUpdated").text(data.updated_at.toString().slice(0, 10)).appendTo(el);
+                $("<span>").addClass("gh-lastUpdated").text("Last Updated " + data.updated_at.toString().slice(0, 10)).appendTo(badges);
             }
             // Forks
             if (settings.showForks) {
-                $("<span>").addClass("gh-forks").text(data.forks_count).appendTo(el);
+                $("<span>").addClass("gh-forks").text(data.forks_count + " forks").appendTo(badges);
             }
             // Stars
             if (settings.showStars) {
-                $("<span>").addClass("gh-stars").text(data.stargazers_count).appendTo(el);
+                $("<span>").addClass("gh-stars").text(data.stargazers_count + " stars").appendTo(badges);
             }
             // Watchers
             if (settings.showWatchers) {
-                $("<span>").addClass("gh-watchers").text(data.watchers).appendTo(el);
+                $("<span>").addClass("gh-watchers").text(data.watchers + " watchers").appendTo(badges);
             }
             // Version
             if (settings.showVersion) {
@@ -73,7 +87,7 @@
                     url: root + repos + settings.owner + "/" + settings.repo + "/releases/latest",
                     success: function(data) {
                         var version = settings.linkVersion ? "<a>" : "<span>";
-                        $(version).addClass("gh-version").attr("href", data.html_url).text(data.tag_name).appendTo(el);
+                        $(version).addClass("gh-version").attr("href", data.html_url).text(data.tag_name).appendTo(badges);
                     },
                     error: function() {
                         console.log("No Releases for " + settings.repo);
@@ -92,7 +106,7 @@
                             total += e.total;
                         });
                         // Add to DOM
-                        $("<span>").addClass("gh-commits").text(total).appendTo(el);
+                        $("<span>").addClass("gh-commits").text(total + " Commits (in the last year)").appendTo(badges);
                     },
                     error: function() {
                         console.log("No Commits Returned for " + settings.repo);
@@ -104,7 +118,7 @@
                 $.ajax({
                     url: root + repos + settings.owner + "/" + settings.repo + "/stats/contributors",
                     success: function(data) {
-                        $("<span>").addClass("gh-contributors").attr("href", data.html_url).text(data.length).appendTo(el);
+                        $("<span>").addClass("gh-contributors").attr("href", data.html_url).text(data.length + " Contributors").appendTo(badges);
                     },
                     error: function() {
                         console.log("No Contributors Found for " + settings.repo);
@@ -119,15 +133,18 @@
                         var languages = [];
                         var container = $("<div>");
                         $.each(data, function(key, value) {
-                            $("<span>").addClass("gh-contributors").text(key).appendTo(container);
+                            $("<span>").addClass("gh-languages").text(key).appendTo(container);
                         });
-                        container.appendTo(el);
+                        container.appendTo(badges);
                     },
                     error: function() {
                         console.log("No Languages Found for " + settings.repo);
                     }
                 });
             }
+            header.appendTo(el);
+            content.appendTo(el);
+            badges.appendTo(el);
             return el;
         }
         // Fetch Data
@@ -136,6 +153,18 @@
         }).done(function(data) {
             console.log(data);
             that.append(buildDOM(data));
+        });
+        $(document).ajaxStop(function() {
+            // Bootstrap
+            if (settings.bootstrap) {
+                $(".gh-main").addClass("well well-lg");
+                $(".gh-header").addClass("h2").find("span, .gh-owner").addClass("small");
+                $(".gh-desc").addClass("lead");
+                $(".gh-badges > span").addClass("label label-info");
+                $(".gh-languages").addClass("label label-warning");
+            }
+            // Show element after everything loads
+            that.show();
         });
         return this;
     };
