@@ -27,6 +27,7 @@
         }, options);
         // Variables
         var root = "https://api.github.com";
+        var repos = "/repos/";
         var that = this;
         // Build DOM
         function buildDOM(data) {
@@ -67,19 +68,25 @@
 
              */
             // Version
-            // if(settings.showVersion) {
-            //     var repo = settings.linkVersion ? '<a>' : '<span>';
-            //     $(repo)
-            //         .attr('href', data.html_url)
-            //         .text(data.name)
-            //         .appendTo(el);
-            // }
+            if (settings.showVersion) {
+                $.ajax({
+                    url: root + repos + settings.owner + "/" + settings.repo + "/releases/latest",
+                    success: function(data) {
+                        var version = settings.linkVersion ? "<a>" : "<span>";
+                        $(version).attr("href", data.html_url).text(data.tag_name).appendTo(el);
+                    },
+                    error: function() {
+                        console.log("No Releases for " + settings.repo);
+                    }
+                });
+            }
             return el;
         }
         // Get Data
-        function fetchData() {}
+        function fetchData(data) {}
+        // Fetch Data
         $.ajax({
-            url: "https://api.github.com/repos/" + settings.owner + "/" + settings.repo
+            url: root + repos + settings.owner + "/" + settings.repo
         }).done(function(data) {
             console.log(data);
             that.append(buildDOM(data));

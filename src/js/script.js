@@ -31,6 +31,7 @@
 
         // Variables
         var root = 'https://api.github.com';
+        var repos = '/repos/';
         var that = this;
 
         // Build DOM
@@ -88,36 +89,37 @@
              */
 
             // Version
-            // if(settings.showVersion) {
-            //     var repo = settings.linkVersion ? '<a>' : '<span>';
-            //     $(repo)
-            //         .attr('href', data.html_url)
-            //         .text(data.name)
-            //         .appendTo(el);
-            // }
+            if( settings.showVersion ) {
+                $.ajax( {
+                    url: root + repos + settings.owner + '/' + settings.repo + '/releases/latest',
+                    success: function ( data ) {
+                        var version = settings.linkVersion ? '<a>' : '<span>';
+                        $( version )
+                            .attr( 'href', data.html_url )
+                            .text( data.tag_name )
+                            .appendTo( el );
+                        },
+                    error: function () {
+                        console.log( 'No Releases for ' + settings.repo );
+                    }
+                } );
+            }
 
             return el;
         }
 
         // Get Data
-        function fetchData () {
+        function fetchData ( data ) {
 
         }
 
+        // Fetch Data
         $.ajax({
-            url: 'https://api.github.com/repos/' + settings.owner + '/' + settings.repo
+            url: root + repos + settings.owner + '/' + settings.repo
         }).done(function ( data ) {
 
             console.log(data);
             that.append(buildDOM( data ));
-            // that.append('<a href="' + data.html_url + '"><h2>' + data.name + '</a><small> by ' + data.owner.login + '</small></h2>');
-            // that.append('<p>');
-            // that.append('<span class="label label-default"> Last Updated: ' + data.updated_at.toString().slice (0, 10) + '</span> ');
-            // that.append('<span class="label label-warning">' + data.language + '</span> ');
-            // that.append('<span class="label label-info">' + data.forks_count + ' Forks</span> ');
-            // that.append('<span class="label label-info">' + data.stargazers_count + ' Stars</span>');
-            // that.append('</p>');
-            // that.append('<p>' + data.description + '</p>');
         });
 
         return this;
