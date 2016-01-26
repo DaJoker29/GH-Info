@@ -1,39 +1,41 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Github</title>
+    <title>GH-Info &mdash; a jQuery plugin</title>
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="container">
         <div class="jumbotron">
-            <h2>Github <br><small>A <strong>jQuery</strong> plugin</small></h2>
+            <h2>GH-Info <br><small>A <strong>jQuery</strong> plugin</small></h2>
         </div>
 
         <div class="alert alert-success">
             The following sections are generated dynamically by the plugin
         </div>
-        <section class="well well-lg github"></section>
+        <section class="well well-lg gh-info"></section>
         <section class="well well-lg cascade"></section>
-        <section class="well well-lg hermes"></section>
+        <!-- <section class="well well-lg hermes"></section> -->
+        <section class="well well-lg jquery"></section>
     </main>
 
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="script.js"></script>
     <script>
-        $('.github').github({
-            username: 'dajoker29',
-            repo: 'GH-jQ'
+        $('.gh-info').github({
+            owner: 'dajoker29',
+            repo: 'gh-info'
         });
         $('.cascade').github({
-            username: 'dajoker29',
-            repo: 'Cascade'
+            owner: 'dajoker29',
+            repo: 'cascade',
+            showRepo: false
+        }).css('color', 'green');
+        $('.jquery').github({
+            owner: 'jquery',
+            repo: 'jquery'
         });
-        $('.hermes').github({
-            username: 'dajoker29',
-            repo: 'Hermes'
-        })
     </script>
 </body>
 </html>
