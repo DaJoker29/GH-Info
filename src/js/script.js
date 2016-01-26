@@ -19,14 +19,16 @@
             'showCommits': true,
             'showContributors': true,
             'showStars': true,
-            'showWatched': true,
+            'showWatchers': true,
             'showForks': true,
             'showLanguages': true,
             'showLastUpdated': true,
             // link parameters (optional)
             'linkRepo': true,
             'linkOwner': true,
-            'linkVersion': true
+            'linkVersion': true,
+            // Configuration options (optional)
+            'bootstrap': true
         }, options );
 
         // Variables
@@ -37,13 +39,14 @@
         // Build DOM
         function buildDOM ( data ) {
 
-            var el = $( '<div></div>' );
+            var el = $( '<div></div>' ).addClass( 'gh-main' );
 
             // Repository Name
             if( settings.showRepoName ) {
                 var repo = settings.linkRepo ? '<a>' : '<span>';
                 $( repo )
                     .attr( 'href', data.html_url )
+                    .addClass( 'gh-repo' )
                     .text( data.name )
                     .appendTo( el );
             }
@@ -56,33 +59,34 @@
                 var owner = settings.linkOwner ? '<a>' : '<span>';
                 $( owner )
                     .attr( 'href', data.owner.html_url )
+                    .addClass('gh-owner')
                     .text( data.owner.login )
                     .appendTo( el );
             }
 
             // Description
             if( settings.showDesc ) {
-                $( '<p>' ).text( data.description ).appendTo( el );
+                $( '<p>' ).addClass( 'gh-desc' ).text( data.description ).appendTo( el );
             }
 
             // Last Updated
             if( settings.showLastUpdated ) {
-                $( '<span>' ).text( data.updated_at.toString().slice( 0, 10 ) ).appendTo( el );
+                $( '<span>' ).addClass( 'gh-lastUpdated' ).text( data.updated_at.toString().slice( 0, 10 ) ).appendTo( el );
             }
 
             // Forks
             if( settings.showForks ) {
-                $( '<span>' ).text( data.forks_count ).appendTo( el );
+                $( '<span>' ).addClass('gh-forks').text( data.forks_count ).appendTo( el );
             }
 
             // Stars
             if(settings.showStars) {
-                $( '<span>' ).text( data.stargazers_count ).appendTo( el );
+                $( '<span>' ).addClass('gh-stars').text( data.stargazers_count ).appendTo( el );
             }
 
             // Watchers
-            if( settings.showWatched ) {
-                $( '<span>' ).text( data.watchers ).appendTo ( el );
+            if( settings.showWatchers ) {
+                $( '<span>' ).addClass('gh-watchers').text( data.watchers ).appendTo ( el );
             }
 
             // Version
@@ -92,6 +96,7 @@
                     success: function ( data ) {
                         var version = settings.linkVersion ? '<a>' : '<span>';
                         $( version )
+                            .addClass( 'gh-version' )
                             .attr( 'href', data.html_url )
                             .text( data.tag_name )
                             .appendTo( el );
@@ -118,6 +123,7 @@
 
                         // Add to DOM
                         $( '<span>' )
+                            .addClass( 'gh-commits' )
                             .text( total )
                             .appendTo( el );
                         },
@@ -133,6 +139,7 @@
                     url: root + repos + settings.owner + '/' + settings.repo + '/stats/contributors',
                     success: function ( data ) {
                         $( '<span>' )
+                            .addClass( 'gh-contributors' )
                             .attr( 'href', data.html_url )
                             .text( data.length )
                             .appendTo( el );
@@ -152,7 +159,10 @@
                         var container = $( '<div>' );
 
                         $.each( data, function ( key, value ) {
-                            $( '<span>' ).text( key ).appendTo( container );
+                            $( '<span>' )
+                                .addClass( 'gh-contributors' )
+                                .text( key )
+                                .appendTo( container );
                         });
 
                         container.appendTo( el );
