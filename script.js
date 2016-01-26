@@ -13,8 +13,8 @@
             showOwnerName: true,
             showRepoName: true,
             showVersion: true,
-            showCommits: false,
-            showContributors: false,
+            showCommits: true,
+            showContributors: true,
             showStars: true,
             showWatched: true,
             showForks: true,
@@ -64,7 +64,7 @@
             // Stars
             /*
 
-                STILL NEED TO ADD VERSIONS, COMMITS, CONTRIBUTORS, LANGUAGES and WATCHERS.
+                STILL NEED TO ADD  COMMITS, CONTRIBUTORS, LANGUAGES and WATCHERS.
 
              */
             // Version
@@ -77,6 +77,25 @@
                     },
                     error: function() {
                         console.log("No Releases for " + settings.repo);
+                    }
+                });
+            }
+            // Commits (in the last year)
+            if (settings.showCommits) {
+                $.ajax({
+                    url: root + repos + settings.owner + "/" + settings.repo + "/stats/commit_activity",
+                    success: function(data) {
+                        // Set Counter
+                        var total = 0;
+                        // Count Commits
+                        data.forEach(function(e) {
+                            total += e.total;
+                        });
+                        // Add to DOM
+                        $("<span>").text(total).appendTo(el);
+                    },
+                    error: function() {
+                        console.log("No Commits Returned for " + settings.repo);
                     }
                 });
             }
