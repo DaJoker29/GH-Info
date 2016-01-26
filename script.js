@@ -61,10 +61,13 @@
             if (settings.showStars) {
                 $("<span>").text(data.stargazers_count).appendTo(el);
             }
-            // Stars
+            // Watchers
+            if (settings.showWatched) {
+                $("<span>").text(data.watchers).appendTo(el);
+            }
             /*
 
-                STILL NEED TO ADD CONTRIBUTORS, LANGUAGES and WATCHERS.
+                STILL NEED TO ADD LANGUAGES and WATCHERS.
 
              */
             // Version
@@ -104,7 +107,18 @@
                 $.ajax({
                     url: root + repos + settings.owner + "/" + settings.repo + "/stats/contributors",
                     success: function(data) {
-                        console.log(data);
+                        $("<span>").attr("href", data.html_url).text(data.length).appendTo(el);
+                    },
+                    error: function() {
+                        console.log("No Contributors Found for " + settings.repo);
+                    }
+                });
+            }
+            // Watchers
+            if (settings.showWatched) {
+                $.ajax({
+                    url: root + repos + settings.owner + "/" + settings.repo + "/stats/contributors",
+                    success: function(data) {
                         $("<span>").attr("href", data.html_url).text(data.length).appendTo(el);
                     },
                     error: function() {
