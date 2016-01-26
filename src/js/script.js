@@ -84,7 +84,7 @@
 
             /*
 
-                STILL NEED TO ADD  COMMITS, CONTRIBUTORS, LANGUAGES and WATCHERS.
+                STILL NEED TO ADD CONTRIBUTORS, LANGUAGES and WATCHERS.
 
              */
 
@@ -129,6 +129,24 @@
                     }
                 } );
             }
+
+            // Contributors
+            if( settings.showContributors ) {
+                $.ajax( {
+                    url: root + repos + settings.owner + '/' + settings.repo + '/stats/contributors',
+                    success: function ( data ) {
+                        console.log( data );
+                        $( '<span>' )
+                            .attr( 'href', data.html_url )
+                            .text( data.length )
+                            .appendTo( el );
+                        },
+                    error: function () {
+                        console.log( 'No Contributors Found for ' + settings.repo );
+                    }
+                } );
+            }
+
 
             return el;
         }
